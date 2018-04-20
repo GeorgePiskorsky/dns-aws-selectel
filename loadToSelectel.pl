@@ -52,17 +52,20 @@ sub translateRecord() {
 		#### TODO: This records must not be overwriten
 			my ($p, $c) = split / /, ${$_}{'Value'};
 			$srec{'content'} = $c;
+			$srec{'content'} =~ s/"//g;
 			$srec{'priority'} = $p;
 			my $copy = { %srec };
 			push(@newrec, $copy);
 		}
 	} elsif ($srec{'type'} eq 'SPF') {
 		$srec{'content'} = ${$aws}{'ResourceRecords'}[0]{'Value'};
+		$srec{'content'} =~ s/"//g;
 		push(@newrec, \%srec);
 	} elsif ($srec{'type'} eq 'TXT') {
 		foreach(@{${$aws}{'ResourceRecords'}}) {
                 #### TODO: This records must not be overwriten
                         $srec{'content'} = ${$_}{'Value'};
+			$srec{'content'} =~ s/"//g;
 			my $copy = { %srec };
                         push(@newrec, $copy);
                 }
